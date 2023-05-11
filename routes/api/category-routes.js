@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { FOREIGNKEYS } = require('sequelize/types/query-types');
+// const { FOREIGNKEYS } = require('sequelize/types/query-types');
 const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
