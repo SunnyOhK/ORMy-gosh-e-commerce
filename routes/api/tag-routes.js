@@ -45,10 +45,10 @@ router.put('/:id', async (req, res) => {
   try {
     const tagData = await Tag.update(req.body, {
       where: {
-        id: req.params.id,
+        id: req.params.id
       },
     });
-    if (!tagData[0]) {
+    if (!tagData) {
       res.status(404).json({ message: 'No tag with this id!' });
       return;
     }
@@ -63,7 +63,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const tagData = await Tag.destroy({
       where: {
-        id: req.params.id,
+        id: req.params.id
       },
     });
 
