@@ -1,15 +1,13 @@
 const router = require('express').Router();
-const { FOREIGNKEYS } = require('sequelize/types/query-types');
-const { Category, Product } = require('../../models');
+// const { FOREIGNKEYS } = require('sequelize/types/query-types');
+const { Category, Product, ProductTag } = require('../../models');
 
 // The `/api/categories` endpoint
 
 //* Get ALL categories with associated products
 router.get('/', async (req, res) => {
   try {
-    const categoryData = await Category.findAll({
-      include: [{ model: Product }]
-    });
+    const categoryData = await Category.findAll();
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
@@ -53,7 +51,7 @@ router.put('/:id', async (req, res) => {
         id: req.params.id,
       },
     });
-    if (!categoryData[0]) {
+    if (!categoryData) {
       res.status(404).json({ message: 'No category with this id!' });
       return;
     }
