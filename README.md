@@ -67,7 +67,7 @@ https://github.com/SunnyOhK/ORMy-gosh-e-commerce/assets/127900916/9b46e238-22d1-
 
 
 
-🎬 Or you can view the video at: [https://](https://watch.screencastify.com/v/hI8H5B09gjYRy6FGwkxe)
+🎬 Or you can view the video at: [Screencastify](https://watch.screencastify.com/v/hI8H5B09gjYRy6FGwkxe)
 
 ## Technology Stack
 
