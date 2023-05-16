@@ -50,10 +50,11 @@ After you clone the repository and install the node modules, please follow this 
 
 ### Demo:
 
-https://github.com/SunnyOhK/
+https://github.com/SunnyOhK/ORMy-gosh-e-commerce/assets/127900916/9b46e238-22d1-4b4a-90ca-4aed19c0b8b3
 
 
-🎬 Or you can view the video at: https://
+
+🎬 Or you can view the video at: [https://](https://watch.screencastify.com/v/hI8H5B09gjYRy6FGwkxe)
 
 ## Technology Stack
 
