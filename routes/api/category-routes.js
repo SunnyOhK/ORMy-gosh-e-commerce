@@ -64,8 +64,6 @@ router.put('/:id', async (req, res) => {
 });
 
   // delete a category by its `id` value
-  //! ISSUE:
-  //* "sqlMessage": "Cannot delete or update a parent row: a foreign key constraint fails (`company_db`.`product`, CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON UPDATE CASCADE)"
 
 router.delete('/:id', async (req, res) => {
   try {
