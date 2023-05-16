@@ -1,4 +1,4 @@
-# ORMy-gosh-e-commerce
+# ORMy Gosh E-commerce
 Back-end operations for e-commerce platform utilizing Express.js API, Sequelize, and MySQL
 
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![edX](https://img.shields.io/badge/edX-%2302262B.svg?style=for-the-badge&logo=edX&logoColor=white)  <br>
@@ -7,7 +7,7 @@ Back-end operations for e-commerce platform utilizing Express.js API, Sequelize,
 <br>
 
 ## Description
-This .
+This is a strictly back-end project that interacts with a MySQL database in order to view, update, and delete Product, Category, and Tag data for an e-commerce site.
 
 ## Table of Contents
 
