@@ -12,6 +12,7 @@ This is a strictly back-end project that interacts with a MySQL database in orde
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Demo](#demo)
 - [Technology Stack](#technology-stack)
 - [Credits](#credits)
 - [License](#license)
