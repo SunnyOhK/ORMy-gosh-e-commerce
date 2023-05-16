@@ -6,8 +6,9 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 //*Get all products with associated Category & Tag data
 router.get('/', async (req, res) => {
   try {
-    const productData = await Product.findAll(req.params.id, {
-      include: [{ model: Category }, { model: Tag, through: ProductTag, as: 'tags' }]
+    const productData = await Product.findAll({
+      include: [{ model: Category }, { model: Tag, as: 'tags', attributes: ["id", "tag_name"], through: { attributes: [] } }],
+      // attributes: { exclude: ["product_tag"] }
     });
     res.status(200).json(productData);
   } catch (err) {
@@ -16,10 +17,22 @@ router.get('/', async (req, res) => {
 });
 
 //* Get one product by id; include associated Category & Tag data
+// I have specified the through route in order to render the tag details but deliberately set the attributes of the ProductTag model to an empty array [] to prevent this redundant list from showing  in Insomnia:  --> "product_tag": {"id": 5, "product_id": 3, "tag_id": 1, "productId": 3,  "tagId": 1}
+
 router.get('/:id', async (req, res) => {
   try {
     const productData = await Product.findByPk(req.params.id, {
-      include: [{ model: Category }, { model: Tag, through: ProductTag, as: 'tags' }]
+      include: [
+        { model: Category },
+        {
+          model: Tag,
+          through: {
+            model: ProductTag,
+            attributes: []
+          },
+          as: 'tags', attributes: ['id', 'tag_name']
+        }
+      ]
     });
 
     if (!productData) {
@@ -59,48 +72,40 @@ router.post('/', (req, res) => {
 });
 
 //* UPDATE PRODUCT
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    // update product data
-    await Product.update(req.body, {
+    console.log("Updating by Id")
+    const productData = await Product.update(req.body, {
       where: {
-        id: req.params.id,
+        id: req.params.id
       },
     });
-
-  // find all associated tags from ProductTag
-  const productTags = await ProductTag.findAll({ where: { product_id: req.params.id } });
-
-  // get list of current tag_ids
-  const productTagIds = productTags.map(({ tag_id }) => tag_id);
-
-  // create filtered list of new tag_ids
-  const newProductTags = req.body.tagIds
-    .filter((tag_id) => !productTagIds.includes(tag_id))
-    .map((tag_id) => {
-      return {
-        product_id: req.params.id,
-        tag_id,
-      };
-    });
-
-  // figure out which ones to remove
-  const productTagsToRemove = productTags
-    .filter(({ tag_id }) => !req.body.tagIds.includes(tag_id))
-    .map(({ id }) => id);
-
-  // run both actions
-  await Promise.all([
-    ProductTag.destroy({ where: { id: productTagsToRemove } }),
-    ProductTag.bulkCreate(newProductTags),
-  ]);
-
-  res.status(200).json({ message: 'Product successfully updated!' });
-
-} catch (err) {
-  console.log(err);
-  res.status(400).json(err);
-};
+    if (!req.body.tagIds) {
+      res.json(productData)
+      return
+    }
+    const productTags = await ProductTag.findAll({ where: { product_id: req.params.id } });
+    const productTagIds = productTags.map(({ tag_id }) => tag_id);
+    const newProductTags = req.body.tagIds
+      .filter((tag_id) => !productTagIds.includes(tag_id))
+      .map((tag_id) => {
+        return {
+          product_id: req.params.id,
+          tag_id,
+        };
+      });
+    const productTagsToRemove = productTags
+      .filter(({ tag_id }) => !req.body.tagIds.includes(tag_id))
+      .map(({ id }) => id);
+    const updatedProductTags = await Promise.all([
+      ProductTag.destroy({ where: { id: productTagsToRemove } }),
+      ProductTag.bulkCreate(newProductTags),
+    ]);
+    res.json(updatedProductTags)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json(error)
+  }
 })
 
 // delete one product by its `id` value

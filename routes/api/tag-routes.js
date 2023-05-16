@@ -5,7 +5,18 @@ const { Tag, Product, ProductTag } = require('../../models');
 //* Get all Tags and associated Product data (many-to-one)
 router.get('/', async (req, res) => {
   try {
-    const tagData = await Tag.findAll();
+    const tagData = await Tag.findAll({
+      include: [{
+        model: Product,
+        as: 'products',
+        attributes: ['id', 'product_name'],
+        through: {
+          model: ProductTag,
+          as: 'product_tag',
+          attributes: ['id']
+        }
+      }]
+    });
     res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err);
@@ -13,10 +24,20 @@ router.get('/', async (req, res) => {
 });
 
 // Get single tag by id with associated product data
+// I have specified the through route in order to render the tag details but deliberately set the attributes of the ProductTag model to an empty array [] to prevent this redundant list of ids from showing in Insomnia:  {"product_tag": --> {"product_tag": {"id": 3, "product_id": 1, "tag_id": 8, "productId": 1, "tagId": 8	}
 router.get('/:id', async (req, res) => {
   try {
     const tagData = await Tag.findByPk(req.params.id, {
-      include: [{ model: Product, through: ProductTag, as: 'products' }]
+      include: [
+        {
+          model: Product,
+          through: {
+            ProductTag,
+            attributes: []
+          },
+          as: 'products', attributes: ['id', 'product_name']
+        },
+      ]
     });
 
     if (!tagData) {
